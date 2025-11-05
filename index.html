@@ -21,7 +21,7 @@
             --text-primary: #1F2937;
             --text-secondary: #6B7280;
             --shadow-color: rgba(99, 109, 128, 0.15);
-            --header-bg: rgba(255, 255, 255, 0.9);
+            --header-bg: rgba(255, 255, 255, 0.8);
             --nav-bg: rgba(255, 255, 255, 0.9);
             --team-side-a-bg: linear-gradient(135deg, rgba(56, 189, 248, 0.1), #FFFFFF);
             --team-side-b-bg: linear-gradient(315deg, rgba(0, 0, 0, 0.02), #FFFFFF);
@@ -37,7 +37,7 @@
             --text-primary: #E6EDF3;
             --text-secondary: #8B949E;
             --shadow-color: rgba(0, 0, 0, 0.4);
-            --header-bg: rgba(25, 32, 45, 0.9);
+            --header-bg: rgba(16, 20, 28, 0.8);
             --nav-bg: rgba(25, 32, 45, 0.9);
             --team-side-a-bg: linear-gradient(135deg, rgba(56, 189, 248, 0.05), transparent);
             --team-side-b-bg: linear-gradient(315deg, rgba(255, 255, 255, 0.05), transparent);
@@ -75,23 +75,22 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- MODIFIED: Floating Header --- */
+        /* --- MODIFIED: Header with curved bottom edges --- */
         .header {
             position: fixed;
-            left: 15px;
-            right: 15px;
-            top: 15px;
-            width: calc(100% - 30px);
+            left: 0;
+            top: 0;
+            width: 100%;
             background: var(--header-bg);
             backdrop-filter: blur(15px);
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
-            box-shadow: 0 8px 25px var(--shadow-color);
-            padding: 12px 20px;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
             transition: all 0.3s;
         }
         
@@ -201,8 +200,23 @@
         .btn-primary:hover { opacity: 0.9; }
         .auth-error { color: var(--danger-color); margin-top: -10px; margin-bottom: 15px; font-weight: 600; height: 20px; }
         #app-screen { display: none; }
-        /* MODIFIED: Increased padding-top for the new floating header */
-        body.app-visible { padding-top: 90px; padding-bottom: 100px; }
+        body.app-visible { padding-top: 80px; padding-bottom: 100px; }
+        
+        /* --- NEW: Card Animation --- */
+        @keyframes card-enter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animated-card {
+            animation: card-enter 0.5s ease-out forwards;
+        }
+
     </style>
 </head>
 <body>
@@ -430,11 +444,11 @@
             const container = document.getElementById('home');
             db.collection("predictions").where("status", "==", "pending").orderBy("matchTime", "asc").onSnapshot((querySnapshot) => {
                 let html = '';
-                querySnapshot.forEach((doc) => {
+                querySnapshot.forEach((doc, index) => {
                     const p = doc.data();
                     const matchDate = p.matchTime.toDate();
                     const timeString = matchDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-                    html += `<div class="prediction-card styled-card" data-match-time="${matchDate.toISOString()}"><div class="match-banner"><div class="team-side team-a"><img src="${p.team1Logo}" alt="${p.team1Name}"><span class="team-name">${p.team1Name}</span></div><div class="match-scoreboard"><div class="match-time">${timeString}</div><div class="match-score">${p.score.team1}-${p.score.team2}</div></div><div class="team-side team-b"><img src="${p.team2Logo}" alt="${p.team2Name}"><span class="team-name">${p.team2Name}</span></div></div><div class="prediction-footer"><div class="prediction-label"><i class="fas fa-trophy"></i><span>التوقع</span></div><div class="prediction-value"><span>${p.predictionText}</span></div></div></div>`;
+                    html += `<div class="prediction-card styled-card animated-card" style="animation-delay: ${index * 100}ms" data-match-time="${matchDate.toISOString()}"><div class="match-banner"><div class="team-side team-a"><img src="${p.team1Logo}" alt="${p.team1Name}"><span class="team-name">${p.team1Name}</span></div><div class="match-scoreboard"><div class="match-time">${timeString}</div><div class="match-score">${p.score.team1}-${p.score.team2}</div></div><div class="team-side team-b"><img src="${p.team2Logo}" alt="${p.team2Name}"><span class="team-name">${p.team2Name}</span></div></div><div class="prediction-footer"><div class="prediction-label"><i class="fas fa-trophy"></i><span>التوقع</span></div><div class="prediction-value"><span>${p.predictionText}</span></div></div></div>`;
                 });
                 container.innerHTML = html;
                 updateMatchStates();
@@ -445,11 +459,11 @@
             const container = document.getElementById('results');
             db.collection("predictions").where("status", "in", ["success", "failed"]).orderBy("matchTime", "desc").onSnapshot((querySnapshot) => {
                 let html = '<h2 class="page-title">النتائج</h2>';
-                querySnapshot.forEach((doc) => {
+                querySnapshot.forEach((doc, index) => {
                     const p = doc.data();
                     const statusClass = p.status === 'success' ? 'success' : 'failed';
                     const statusText = p.status === 'success' ? 'نجح' : 'خسر';
-                    html += `<div class="styled-card result-card ${statusClass}"><div class="result-details"><div class="result-teams"><img src="${p.team1Logo}"><span>${p.team1Name} ${p.score.team1} - ${p.score.team2} ${p.team2Name}</span><img src="${p.team2Logo}"></div><div class="result-prediction">التوقع: ${p.predictionText} - <span class="status ${statusClass}">${statusText}</span></div></div></div>`;
+                    html += `<div class="styled-card result-card animated-card" style="animation-delay: ${index * 100}ms"><div class="result-details"><div class="result-teams"><img src="${p.team1Logo}"><span>${p.team1Name} ${p.score.team1} - ${p.score.team2} ${p.team2Name}</span><img src="${p.team2Logo}"></div><div class="result-prediction">التوقع: ${p.predictionText} - <span class="status ${statusClass}">${statusText}</span></div></div></div>`;
                 });
                 container.innerHTML = html;
             });
@@ -459,13 +473,13 @@
             const container = document.getElementById('notifications');
             db.collection("notifications").orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
                 let html = '<h2 class="page-title">الإشعارات</h2>';
-                querySnapshot.forEach((doc) => {
+                querySnapshot.forEach((doc, index) => {
                     const n = doc.data();
                     const notificationDate = n.createdAt ? n.createdAt.toDate() : new Date();
                     let iconHtml = n.icon && (n.icon.startsWith('http') || n.icon.startsWith('https'))
                         ? `<img src="${n.icon}" alt="Notification Icon">`
                         : `<i class="${n.icon || 'fas fa-bell'}"></i>`;
-                    html += `<div class="styled-card notification-item"><div class="icon">${iconHtml}</div><div class="content"><div class="title">${n.title}</div><div class="subtitle">${n.subtitle}</div></div><div class="time">${timeAgo(notificationDate)}</div></div>`;
+                    html += `<div class="styled-card notification-item animated-card" style="animation-delay: ${index * 100}ms"><div class="icon">${iconHtml}</div><div class="content"><div class="title">${n.title}</div><div class="subtitle">${n.subtitle}</div></div><div class="time">${timeAgo(notificationDate)}</div></div>`;
                 });
                 container.innerHTML = html;
             });
@@ -482,4 +496,4 @@
         }
     </script>
 </body>
-</html>
+</html>```
