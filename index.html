@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WINCASH - النسخة النهائية</title>
+    
+    <link href="https://db.onlinewebfonts.com/c/7d411bb0357d6fd29347455b7d207995?family=JF+Flat+Regular" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-bg: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+            --accent-color: #38BDF8;
+            --live-color: #F87171;
+            --live-glow: rgba(248, 113, 113, 0.7);
+            --success-color: #238A36;
+            --danger-color: #DA3633;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --shadow-color: rgba(99, 109, 128, 0.15);
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --team-side-a-bg: linear-gradient(135deg, rgba(56, 189, 248, 0.1), #FFFFFF);
+            --team-side-b-bg: linear-gradient(315deg, rgba(0, 0, 0, 0.02), #FFFFFF);
+            --scoreboard-bg: rgba(255, 255, 255, 0.7);
+            --prediction-footer-bg: rgba(56, 189, 248, 0.08);
+            --font-family: "JF Flat Regular", sans-serif;
+        }
+
+        body.dark-theme {
+            --primary-bg: #10141C;
+            --card-bg: #19202D;
+            --border-color: #30363D;
+            --text-primary: #E6EDF3;
+            --text-secondary: #8B949E;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --header-bg: rgba(25, 32, 45, 0.9);
+            --nav-bg: rgba(25, 32, 45, 0.9);
+            --team-side-a-bg: linear-gradient(135deg, rgba(56, 189, 248, 0.05), transparent);
+            --team-side-b-bg: linear-gradient(315deg, rgba(255, 255, 255, 0.05), transparent);
+            --scoreboard-bg: rgba(16, 20, 28, 0.7);
+            --prediction-footer-bg: rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        *:focus, *:active { outline: none !important; box-shadow: none !important; -webkit-tap-highlight-color: transparent !important; }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        .main-content { padding: 20px 15px; }
+        
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: none; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        body.dark-theme .loading-overlay { background-color: rgba(16, 20, 28, 0.5); }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid var(--border-color);
+            border-top: 5px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- MODIFIED: Floating Header --- */
+        .header {
+            position: fixed;
+            left: 15px;
+            right: 15px;
+            top: 15px;
+            width: calc(100% - 30px);
+            background: var(--header-bg);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            padding: 12px 20px;
+            transition: all 0.3s;
+        }
+        
+        .header .logo { font-size: 1.7em; font-weight: 800; color: var(--accent-color); }
+        .header-balance { display: flex; align-items: center; font-weight: 700; }
+        .header-balance .icon { color: var(--accent-color); margin-left: 10px; font-size: 1.3em; }
+        .header-balance .balance-amount { font-size: 1.2em; }
+        .header-balance .currency { font-size: 0.9em; color: var(--text-secondary); margin-right: 5px; }
+        
+        .bottom-nav {
+            position: fixed; left: 15px; right: 15px; bottom: 15px;
+            width: calc(100% - 30px); background: var(--nav-bg); backdrop-filter: blur(15px);
+            z-index: 1000; display: flex; justify-content: space-around;
+            border: 1px solid var(--border-color); border-radius: 30px; 
+            box-shadow: 0 8px 25px var(--shadow-color); padding: 5px 0; transition: all 0.3s;
+        }
+        .nav-item { flex: 1; text-align: center; padding: 10px 0; color: var(--text-secondary); cursor: pointer; transition: color 0.3s ease; }
+        .nav-item i { font-size: 1.5em; display: block; margin-bottom: 5px; transition: transform 0.3s ease; }
+        .nav-item span { font-size: 0.8em; font-weight: 600; }
+        .nav-item.active { color: var(--accent-color); }
+        .nav-item.active i { transform: scale(1.1); }
+        
+        .page-title { font-size: 2em; font-weight: 700; margin-bottom: 25px; }
+        h3.section-title { font-size: 1.2em; font-weight: 600; margin-bottom: 15px; color: var(--text-secondary); }
+
+        .styled-card { background-color: var(--card-bg); border-radius: 16px; margin-bottom: 15px; border: 1px solid var(--border-color); transition: all 0.3s; box-shadow: 0 4px 15px var(--shadow-color); }
+        
+        .notification-item { display: flex; align-items: flex-start; padding: 20px; gap: 15px; }
+        .notification-item .icon { font-size: 1.5em; color: var(--accent-color); width: 40px; height: 40px; text-align: center; margin-top: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .notification-item .icon img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .notification-item .content { flex-grow: 1; }
+        .notification-item .title { font-weight: 700; }
+        .notification-item .subtitle { font-size: 0.9em; color: var(--text-secondary); }
+        .notification-item .time { font-size: 0.8em; color: var(--text-secondary); white-space: nowrap; }
+
+        .prediction-card { border-radius: 24px; box-shadow: 0 8px 30px var(--shadow-color), 0 0 0 1px var(--border-color); overflow: hidden; margin-bottom: 25px; }
+        .prediction-card:hover { transform: translateY(-5px); }
+        .match-banner { position: relative; display: flex; height: 140px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .team-side { width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; transition: background-color: 0.3s; }
+        .team-side.team-a { background: var(--team-side-a-bg); }
+        .team-side.team-b { background: var(--team-side-b-bg); }
+        .team-side img { width: 60px; height: 60px; margin-bottom: 8px; }
+        .team-side .team-name { font-size: 1.2em; font-weight: 700; text-align: center; }
+        .match-scoreboard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: var(--scoreboard-bg); backdrop-filter: blur(10px); border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6em; transition: all 0.3s; }
+        .prediction-card.live .match-scoreboard { border-color: var(--live-color); animation: pulse-border 1.5s infinite; }
+        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 var(--live-glow); } 70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
+        .match-scoreboard .match-time { font-size: 1.1em; letter-spacing: 1px; }
+        .match-scoreboard .match-score { font-size: 1.1em; letter-spacing: 1px; }
+        .prediction-card .match-score { display: none; }
+        .prediction-card.live .match-time { display: none; }
+        .prediction-card.live .match-score { display: block; }
+        .prediction-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background-color: var(--prediction-footer-bg); transition: background-color 0.3s; }
+        .prediction-label { display: flex; align-items: center; font-size: 1em; font-weight: 600; color: var(--text-secondary); }
+        .prediction-label i { margin-left: 8px; font-size: 1.1em; }
+        .prediction-value { color: var(--accent-color); border: 1px solid var(--accent-color); padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 1em; }
+        
+        .result-card { display: flex; align-items: center; padding: 20px; border-right: 5px solid; }
+        .result-card.success { border-color: var(--success-color); }
+        .result-card.failed { border-color: var(--danger-color); }
+        .result-details { flex-grow: 1; }
+        .result-teams { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; }
+        .result-teams img { width: 24px; height: 24px; margin: 0 8px; }
+        .result-prediction { font-size: 0.9em; color: var(--text-secondary); }
+        .result-prediction .status.success { color: var(--success-color); font-weight: bold; }
+        .result-prediction .status.failed { color: var(--danger-color); font-weight: bold; }
+        
+        .account-profile-header { text-align: center; margin-bottom: 30px; }
+        .account-profile-header .avatar { font-size: 6em; color: var(--accent-color); margin-bottom: 10px; }
+        .account-profile-header .username { font-size: 1.8em; font-weight: 700; color: var(--text-primary); }
+        .account-profile-header .email { color: var(--text-secondary); }
+        .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-item { background-color: var(--card-bg); padding: 20px 15px; border-radius: 16px; text-align: center; border: 1px solid var(--border-color); }
+        .stat-item .stat-number { font-size: 1.8em; font-weight: 800; color: var(--accent-color); }
+        .stat-item .stat-label { font-size: 0.9em; color: var(--text-secondary); font-weight: 600; }
+        
+        .action-item { display: flex; align-items: center; padding: 20px; text-decoration: none; color: var(--text-primary); }
+        .action-item .icon { font-size: 1.2em; margin-left: 20px; color: var(--text-secondary); width: 25px; }
+        .action-item .text { flex-grow: 1; font-weight: 600; }
+        .action-item .chevron { color: var(--text-secondary); }
+        .theme-switch-wrapper { display: flex; align-items: center; margin-right: auto; }
+        .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
+        .theme-switch input { display: none; }
+        .slider { background-color: #475569; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-color); }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .logout-button .icon { color: var(--live-color); }
+        
+        #auth-screen { position: fixed; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 2000; background: var(--primary-bg); transition: opacity 0.5s; opacity: 1; }
+        .auth-container { width: 100%; max-width: 400px; text-align: center; }
+        .auth-logo { font-size: 3em; font-weight: 800; color: var(--accent-color); margin-bottom: 10px; }
+        .auth-subtitle { color: var(--text-secondary); margin-bottom: 40px; }
+        .auth-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 30px; }
+        .auth-tab { flex: 1; padding: 15px; font-weight: 600; color: var(--text-secondary); cursor: pointer; position: relative; }
+        .auth-tab.active { color: var(--text-primary); }
+        .auth-tab.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--accent-color); }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .form-input { width: 100%; background-color: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; color: var(--text-primary); font-size: 1em; transition: border-color 0.3s; }
+        .form-input::placeholder { color: var(--text-secondary); }
+        .form-input:focus { border-color: var(--accent-color); }
+        .terms-agreement { display: flex; align-items: center; margin-bottom: 20px; text-align: right; }
+        .terms-agreement input { margin-left: 10px; }
+        .terms-agreement label { font-size: 0.9em; color: var(--text-secondary); }
+        .terms-agreement a { color: var(--accent-color); text-decoration: none; }
+        .btn-primary { width: 100%; background-color: var(--accent-color); border: none; border-radius: 12px; padding: 15px; color: #10141C; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: opacity 0.3s; }
+        .btn-primary:hover { opacity: 0.9; }
+        .auth-error { color: var(--danger-color); margin-top: -10px; margin-bottom: 15px; font-weight: 600; height: 20px; }
+        #app-screen { display: none; }
+        /* MODIFIED: Increased padding-top for the new floating header */
+        body.app-visible { padding-top: 90px; padding-bottom: 100px; }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div></div>
+
+    <div id="auth-screen">
+        <div class="auth-container">
+            <div class="auth-logo">WINCASH</div>
+            <p class="auth-subtitle">توقعاتك الرابحة تبدأ من هنا</p>
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="showAuthForm('login-form', this)">تسجيل الدخول</div>
+                <div class="auth-tab" onclick="showAuthForm('signup-form', this)">إنشاء حساب</div>
+            </div>
+            <form id="login-form" class="auth-form active">
+                <input id="login-email" type="email" class="form-input" placeholder="البريد الإلكتروني" required>
+                <input id="login-password" type="password" class="form-input" placeholder="كلمة المرور" required>
+                <div id="login-error" class="auth-error"></div>
+                <button type="submit" class="btn-primary">تسجيل الدخول</button>
+            </form>
+            <form id="signup-form" class="auth-form">
+                <input id="signup-name" type="text" class="form-input" placeholder="الاسم الكامل" required>
+                <input id="signup-email" type="email" class="form-input" placeholder="البريد الإلكتروني" required>
+                <input id="signup-password" type="password" class="form-input" placeholder="كلمة المرور" required>
+                <div class="terms-agreement"><input type="checkbox" id="terms" required><label for="terms">أوافق على <a href="#">شروط الاستخدام</a> و <a href="#">سياسة الخصوصية</a></label></div>
+                <div id="signup-error" class="auth-error"></div>
+                <button type="submit" class="btn-primary">إنشاء حساب</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-screen">
+        <header class="header">
+            <div class="header-balance"><i class="icon fas fa-coins"></i><span id="user-balance" class="balance-amount">0.00</span><span class="currency">د.م</span></div>
+            <div class="logo">WINCASH</div>
+        </header>
+
+        <main class="main-content">
+            <div id="home" class="page"></div>
+            <div id="results" class="page"></div>
+            <div id="notifications" class="page"></div>
+            <div id="account" class="page">
+                <div class="account-profile-header">
+                    <div class="avatar"><i class="fas fa-user-circle"></i></div>
+                    <div id="profile-username" class="username">اسم المستخدم</div>
+                    <div id="profile-email" class="email">user@example.com</div>
+                </div>
+                <h3 class="section-title">إحصائيات التطبيق</h3>
+                <div class="stats-container">
+                    <div class="stat-item"><div id="stats-total" class="stat-number">0</div><div class="stat-label">إجمالي التوقعات</div></div>
+                    <div class="stat-item"><div id="stats-successful" class="stat-number">0</div><div class="stat-label">التوقعات الناجحة</div></div>
+                    <div class="stat-item"><div id="stats-accuracy" class="stat-number">0%</div><div class="stat-label">نسبة الدقة</div></div>
+                </div>
+                <h3 class="section-title">الإعدادات</h3>
+                <div class="styled-card">
+                    <div class="action-item"><i class="icon fas fa-palette"></i><span class="text">الوضع الداكن</span><div class="theme-switch-wrapper"><label class="theme-switch" for="theme-toggle"><input type="checkbox" id="theme-toggle" /><div class="slider"></div></label></div></div>
+                    <a href="#" class="action-item" style="border-top: 1px solid var(--border-color);"><i class="icon fas fa-edit"></i><span class="text">تعديل الملف الشخصي</span><i class="chevron fas fa-chevron-left"></i></a>
+                </div>
+                <div class="styled-card" style="margin-top: 25px;"><a href="#" id="logout-button" class="action-item logout-button"><i class="icon fas fa-sign-out-alt"></i><span class="text">تسجيل الخروج</span></a></div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+             <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i><span>الرئيسية</span></div>
+            <div class="nav-item" onclick="showPage('results', this)"><i class="fas fa-poll"></i><span>النتائج</span></div>
+            <div class="nav-item" onclick="showPage('notifications', this)"><i class="fas fa-bell"></i><span>الإشعارات</span></div>
+            <div class="nav-item" onclick="showPage('account', this)"><i class="fas fa-user"></i><span>حسابي</span></div>
+        </nav>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxoNb9guwg4zUgNM4TAe6isL4atLKIpXo",
+            authDomain: "wincast-fb119.firebaseapp.com",
+            databaseURL: "https://wincast-fb119-default-rtdb.firebaseio.com",
+            projectId: "wincast-fb119",
+            storageBucket: "wincast-fb119.firebasestorage.app",
+            messagingSenderId: "1034670869173",
+            appId: "1:1034670869173:web:26b43524f105de714a0cfc",
+            measurementId: "G-64BDLLSCWH"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const authScreen = document.getElementById('auth-screen');
+        const appScreen = document.getElementById('app-screen');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const logoutButton = document.getElementById('logout-button');
+
+        auth.onAuthStateChanged(user => { user ? fetchUserDataAndEnterApp(user) : showAuthScreen(); });
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value, email = document.getElementById('signup-email').value, password = document.getElementById('signup-password').value, errorEl = document.getElementById('signup-error');
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(cred => db.collection('users').doc(cred.user.uid).set({ name, email, balance: 0.00 }))
+                .catch(err => { errorEl.textContent = getAuthErrorMessage(err.code); });
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value, password = document.getElementById('login-password').value, errorEl = document.getElementById('login-error');
+            errorEl.textContent = '';
+            auth.signInWithEmailAndPassword(email, password).catch(err => { errorEl.textContent = getAuthErrorMessage(err.code); });
+        });
+
+        logoutButton.addEventListener('click', (e) => { e.preventDefault(); auth.signOut(); });
+
+        function fetchUserDataAndEnterApp(user) {
+            db.collection('users').doc(user.uid).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('user-balance').textContent = data.balance.toFixed(2);
+                    document.getElementById('profile-username').textContent = data.name;
+                    document.getElementById('profile-email').textContent = data.email;
+                }
+            });
+            showAppScreen();
+        }
+
+        function showAuthScreen() {
+            appScreen.style.display = 'none'; document.body.classList.remove('app-visible');
+            authScreen.style.display = 'flex'; authScreen.style.opacity = '1';
+        }
+
+        function showAppScreen() {
+            authScreen.style.opacity = '0';
+            setTimeout(() => {
+                authScreen.style.display = 'none';
+                appScreen.style.display = 'block';
+                document.body.classList.add('app-visible');
+                initializeApp();
+            }, 500);
+        }
+
+        function showAuthForm(formId, tabEl) {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(formId).classList.add('active');
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            tabEl.classList.add('active');
+            document.getElementById('login-error').textContent = '';
+            document.getElementById('signup-error').textContent = '';
+        }
+
+        function showPage(pageId, navEl) {
+            loadingOverlay.style.display = 'flex';
+            setTimeout(() => {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(pageId).classList.add('active');
+                if (navEl) {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    navEl.classList.add('active');
+                }
+                loadingOverlay.style.display = 'none';
+            }, 250);
+        }
+        
+        function updateMatchStates() {
+            const now = new Date();
+            document.querySelectorAll('.prediction-card').forEach(card => {
+                if (card.dataset.matchTime) {
+                    if (now >= new Date(card.dataset.matchTime)) card.classList.add('live'); 
+                    else card.classList.remove('live');
+                }
+            });
+        }
+        
+        function applyTheme(theme) {
+            document.body.classList.toggle('dark-theme', theme === 'dark');
+            localStorage.setItem('theme', theme);
+        }
+
+        function initializeApp() {
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('change', () => applyTheme(themeToggle.checked ? 'dark' : 'light'));
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+            themeToggle.checked = savedTheme === 'dark';
+            // Set initial page without showing spinner
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('home').classList.add('active');
+            
+            loadPredictions();
+            loadResults();
+            loadNotifications();
+            loadAppStatistics();
+            setInterval(updateMatchStates, 60000);
+        }
+
+        function loadAppStatistics() {
+            db.collection("predictions").where("status", "in", ["success", "failed"]).onSnapshot((snapshot) => {
+                let successful = 0;
+                snapshot.forEach(doc => { if (doc.data().status === 'success') successful++; });
+                const totalFinished = snapshot.size;
+                const accuracy = totalFinished > 0 ? Math.round((successful / totalFinished) * 100) : 0;
+                document.getElementById('stats-total').textContent = totalFinished;
+                document.getElementById('stats-successful').textContent = successful;
+                document.getElementById('stats-accuracy').textContent = `${accuracy}%`;
+            });
+        }
+
+        function timeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = seconds / 31536000;
+            if (interval > 1) return `منذ ${Math.floor(interval)} سنة`;
+            interval = seconds / 2592000;
+            if (interval > 1) return `منذ ${Math.floor(interval)} شهر`;
+            interval = seconds / 86400;
+            if (interval > 1) return `منذ ${Math.floor(interval)} يوم`;
+            interval = seconds / 3600;
+            if (interval > 1) return `منذ ${Math.floor(interval)} ساعة`;
+            interval = seconds / 60;
+            if (interval > 1) return `منذ ${Math.floor(interval)} دقيقة`;
+            return 'الآن';
+        }
+
+        function loadPredictions() {
+            const container = document.getElementById('home');
+            db.collection("predictions").where("status", "==", "pending").orderBy("matchTime", "asc").onSnapshot((querySnapshot) => {
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const p = doc.data();
+                    const matchDate = p.matchTime.toDate();
+                    const timeString = matchDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+                    html += `<div class="prediction-card styled-card" data-match-time="${matchDate.toISOString()}"><div class="match-banner"><div class="team-side team-a"><img src="${p.team1Logo}" alt="${p.team1Name}"><span class="team-name">${p.team1Name}</span></div><div class="match-scoreboard"><div class="match-time">${timeString}</div><div class="match-score">${p.score.team1}-${p.score.team2}</div></div><div class="team-side team-b"><img src="${p.team2Logo}" alt="${p.team2Name}"><span class="team-name">${p.team2Name}</span></div></div><div class="prediction-footer"><div class="prediction-label"><i class="fas fa-trophy"></i><span>التوقع</span></div><div class="prediction-value"><span>${p.predictionText}</span></div></div></div>`;
+                });
+                container.innerHTML = html;
+                updateMatchStates();
+            });
+        }
+        
+        function loadResults() {
+            const container = document.getElementById('results');
+            db.collection("predictions").where("status", "in", ["success", "failed"]).orderBy("matchTime", "desc").onSnapshot((querySnapshot) => {
+                let html = '<h2 class="page-title">النتائج</h2>';
+                querySnapshot.forEach((doc) => {
+                    const p = doc.data();
+                    const statusClass = p.status === 'success' ? 'success' : 'failed';
+                    const statusText = p.status === 'success' ? 'نجح' : 'خسر';
+                    html += `<div class="styled-card result-card ${statusClass}"><div class="result-details"><div class="result-teams"><img src="${p.team1Logo}"><span>${p.team1Name} ${p.score.team1} - ${p.score.team2} ${p.team2Name}</span><img src="${p.team2Logo}"></div><div class="result-prediction">التوقع: ${p.predictionText} - <span class="status ${statusClass}">${statusText}</span></div></div></div>`;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function loadNotifications() {
+            const container = document.getElementById('notifications');
+            db.collection("notifications").orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
+                let html = '<h2 class="page-title">الإشعارات</h2>';
+                querySnapshot.forEach((doc) => {
+                    const n = doc.data();
+                    const notificationDate = n.createdAt ? n.createdAt.toDate() : new Date();
+                    let iconHtml = n.icon && (n.icon.startsWith('http') || n.icon.startsWith('https'))
+                        ? `<img src="${n.icon}" alt="Notification Icon">`
+                        : `<i class="${n.icon || 'fas fa-bell'}"></i>`;
+                    html += `<div class="styled-card notification-item"><div class="icon">${iconHtml}</div><div class="content"><div class="title">${n.title}</div><div class="subtitle">${n.subtitle}</div></div><div class="time">${timeAgo(notificationDate)}</div></div>`;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function getAuthErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/user-not-found': case 'auth/wrong-password': return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+                case 'auth/invalid-email': return 'صيغة البريد الإلكتروني غير صحيحة.';
+                case 'auth/email-already-in-use': return 'هذا البريد الإلكتروني مستخدم بالفعل.';
+                case 'auth/weak-password': return 'كلمة المرور يجب أن تتكون من 6 أحرف على الأقل.';
+                default: return 'حدث خطأ. يرجى المحاولة مرة أخرى.';
+            }
+        }
+    </script>
+</body>
+</html>
