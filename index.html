@@ -10,39 +10,35 @@
 
     <style>
         :root {
-            --primary-bg: #F3F4F6;
+            --primary-bg: #F8FAFC;
             --card-bg: #FFFFFF;
-            --border-color: #E5E7EB;
-            --accent-color: #38BDF8;
-            --live-color: #F87171;
-            --live-glow: rgba(248, 113, 113, 0.7);
-            --success-color: #238A36;
-            --danger-color: #DA3633;
-            --text-primary: #1F2937;
-            --text-secondary: #6B7280;
-            --shadow-color: rgba(99, 109, 128, 0.15);
+            --border-color: #E2E8F0;
+            --accent-color: #0891B2;
+            --accent-color-dark: #0E7490;
+            --gold-color: #F59E0B;
+            --live-color: #EF4444;
+            --live-glow: rgba(239, 68, 68, 0.7);
+            --success-color: #16A34A;
+            --danger-color: #E11D48;
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+            --shadow-color: rgba(100, 116, 139, 0.1);
             --header-bg: rgba(255, 255, 255, 0.8);
             --nav-bg: rgba(255, 255, 255, 0.9);
-            --team-side-a-bg: linear-gradient(135deg, rgba(56, 189, 248, 0.1), #FFFFFF);
-            --team-side-b-bg: linear-gradient(315deg, rgba(0, 0, 0, 0.02), #FFFFFF);
-            --scoreboard-bg: rgba(255, 255, 255, 0.7);
-            --prediction-footer-bg: rgba(56, 189, 248, 0.08);
             --font-family: "JF Flat Regular", sans-serif;
         }
 
         body.dark-theme {
-            --primary-bg: #10141C;
-            --card-bg: #19202D;
-            --border-color: #30363D;
-            --text-primary: #E6EDF3;
-            --text-secondary: #8B949E;
-            --shadow-color: rgba(0, 0, 0, 0.4);
-            --header-bg: rgba(16, 20, 28, 0.8);
-            --nav-bg: rgba(25, 32, 45, 0.9);
-            --team-side-a-bg: linear-gradient(135deg, rgba(56, 189, 248, 0.05), transparent);
-            --team-side-b-bg: linear-gradient(315deg, rgba(255, 255, 255, 0.05), transparent);
-            --scoreboard-bg: rgba(16, 20, 28, 0.7);
-            --prediction-footer-bg: rgba(0,0,0,0.1);
+            --primary-bg: #1E293B;
+            --card-bg: #334155;
+            --border-color: #475569;
+            --accent-color: #22D3EE;
+            --accent-color-dark: #0891B2;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --header-bg: rgba(51, 65, 85, 0.8);
+            --nav-bg: rgba(51, 65, 85, 0.9);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,44 +55,22 @@
         .page.active { display: block; }
         .main-content { padding: 20px 15px; }
         
-        .loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.5);
-            display: none; justify-content: center; align-items: center;
-            z-index: 9999;
-        }
-        body.dark-theme .loading-overlay { background-color: rgba(16, 20, 28, 0.5); }
-        .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid var(--border-color);
-            border-top: 5px solid var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(248, 250, 252, 0.5); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        body.dark-theme .loading-overlay { background-color: rgba(30, 41, 59, 0.5); }
+        .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top: 5px solid var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- MODIFIED: Header with curved bottom edges --- */
         .header {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            background: var(--header-bg);
-            backdrop-filter: blur(15px);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
+            position: fixed; left: 0; top: 0; width: 100%;
+            background: var(--header-bg); backdrop-filter: blur(15px);
+            z-index: 1000; display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 20px; 
             border-bottom: 1px solid var(--border-color);
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            transition: all 0.3s;
+            border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; transition: all 0.3s;
         }
-        
         .header .logo { font-size: 1.7em; font-weight: 800; color: var(--accent-color); }
         .header-balance { display: flex; align-items: center; font-weight: 700; }
-        .header-balance .icon { color: var(--accent-color); margin-left: 10px; font-size: 1.3em; }
+        .header-balance .icon { color: var(--gold-color); margin-left: 10px; font-size: 1.3em; }
         .header-balance .balance-amount { font-size: 1.2em; }
         .header-balance .currency { font-size: 0.9em; color: var(--text-secondary); margin-right: 5px; }
         
@@ -107,34 +81,53 @@
             border: 1px solid var(--border-color); border-radius: 30px; 
             box-shadow: 0 8px 25px var(--shadow-color); padding: 5px 0; transition: all 0.3s;
         }
-        .nav-item { flex: 1; text-align: center; padding: 10px 0; color: var(--text-secondary); cursor: pointer; transition: color 0.3s ease; }
+        .nav-item { flex: 1; text-align: center; padding: 10px 0; color: var(--text-secondary); cursor: pointer; transition: color 0.3s ease; position: relative; }
         .nav-item i { font-size: 1.5em; display: block; margin-bottom: 5px; transition: transform 0.3s ease; }
         .nav-item span { font-size: 0.8em; font-weight: 600; }
         .nav-item.active { color: var(--accent-color); }
         .nav-item.active i { transform: scale(1.1); }
         
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: calc(50% - 25px);
+            background-color: var(--live-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+            border: 2px solid var(--nav-bg);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        .notification-badge.show {
+            transform: scale(1);
+        }
+
         .page-title { font-size: 2em; font-weight: 700; margin-bottom: 25px; }
         h3.section-title { font-size: 1.2em; font-weight: 600; margin-bottom: 15px; color: var(--text-secondary); }
-
         .styled-card { background-color: var(--card-bg); border-radius: 16px; margin-bottom: 15px; border: 1px solid var(--border-color); transition: all 0.3s; box-shadow: 0 4px 15px var(--shadow-color); }
         
-        .notification-item { display: flex; align-items: flex-start; padding: 20px; gap: 15px; }
-        .notification-item .icon { font-size: 1.5em; color: var(--accent-color); width: 40px; height: 40px; text-align: center; margin-top: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .notification-item { display: flex; align-items: center; padding: 20px; gap: 15px; }
+        .notification-item .icon { font-size: 1.5em; color: var(--accent-color); width: 40px; height: 40px; text-align: center; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .notification-item .icon img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .notification-item .content { flex-grow: 1; }
         .notification-item .title { font-weight: 700; }
         .notification-item .subtitle { font-size: 0.9em; color: var(--text-secondary); }
         .notification-item .time { font-size: 0.8em; color: var(--text-secondary); white-space: nowrap; }
 
-        .prediction-card { border-radius: 24px; box-shadow: 0 8px 30px var(--shadow-color), 0 0 0 1px var(--border-color); overflow: hidden; margin-bottom: 25px; }
+        .prediction-card { position: relative; border-radius: 24px; box-shadow: 0 8px 30px var(--shadow-color), 0 0 0 1px var(--border-color); overflow: hidden; margin-bottom: 25px; }
         .prediction-card:hover { transform: translateY(-5px); }
         .match-banner { position: relative; display: flex; height: 140px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
         .team-side { width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; transition: background-color: 0.3s; }
-        .team-side.team-a { background: var(--team-side-a-bg); }
-        .team-side.team-b { background: var(--team-side-b-bg); }
         .team-side img { width: 60px; height: 60px; margin-bottom: 8px; }
         .team-side .team-name { font-size: 1.2em; font-weight: 700; text-align: center; }
-        .match-scoreboard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: var(--scoreboard-bg); backdrop-filter: blur(10px); border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6em; transition: all 0.3s; }
+        .match-scoreboard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: var(--header-bg); backdrop-filter: blur(10px); border: 2px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6em; transition: all 0.3s; }
         .prediction-card.live .match-scoreboard { border-color: var(--live-color); animation: pulse-border 1.5s infinite; }
         @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 var(--live-glow); } 70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
         .match-scoreboard .match-time { font-size: 1.1em; letter-spacing: 1px; }
@@ -142,23 +135,23 @@
         .prediction-card .match-score { display: none; }
         .prediction-card.live .match-time { display: none; }
         .prediction-card.live .match-score { display: block; }
-        .prediction-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background-color: var(--prediction-footer-bg); transition: background-color 0.3s; }
+        .prediction-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; transition: background-color: 0.3s; }
         .prediction-label { display: flex; align-items: center; font-size: 1em; font-weight: 600; color: var(--text-secondary); }
-        .prediction-label i { margin-left: 8px; font-size: 1.1em; }
+        .prediction-label i { margin-left: 8px; font-size: 1.1em; color: var(--gold-color); }
         .prediction-value { color: var(--accent-color); border: 1px solid var(--accent-color); padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 1em; }
         
         .result-card { display: flex; align-items: center; padding: 20px; border-right: 5px solid; }
         .result-card.success { border-color: var(--success-color); }
         .result-card.failed { border-color: var(--danger-color); }
         .result-details { flex-grow: 1; }
-        .result-teams { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; }
+        .result-teams { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; text-align: center; }
         .result-teams img { width: 24px; height: 24px; margin: 0 8px; }
         .result-prediction { font-size: 0.9em; color: var(--text-secondary); }
         .result-prediction .status.success { color: var(--success-color); font-weight: bold; }
         .result-prediction .status.failed { color: var(--danger-color); font-weight: bold; }
         
         .account-profile-header { text-align: center; margin-bottom: 30px; }
-        .account-profile-header .avatar { font-size: 6em; color: var(--accent-color); margin-bottom: 10px; }
+        .account-profile-header .avatar { font-size: 6em; margin-bottom: 10px; color: var(--accent-color); }
         .account-profile-header .username { font-size: 1.8em; font-weight: 700; color: var(--text-primary); }
         .account-profile-header .email { color: var(--text-secondary); }
         .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
@@ -166,7 +159,7 @@
         .stat-item .stat-number { font-size: 1.8em; font-weight: 800; color: var(--accent-color); }
         .stat-item .stat-label { font-size: 0.9em; color: var(--text-secondary); font-weight: 600; }
         
-        .action-item { display: flex; align-items: center; padding: 20px; text-decoration: none; color: var(--text-primary); }
+        .action-item { display: flex; align-items: center; padding: 20px; text-decoration: none; color: var(--text-primary); cursor: pointer; }
         .action-item .icon { font-size: 1.2em; margin-left: 20px; color: var(--text-secondary); width: 25px; }
         .action-item .text { flex-grow: 1; font-weight: 600; }
         .action-item .chevron { color: var(--text-secondary); }
@@ -181,7 +174,7 @@
         
         #auth-screen { position: fixed; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 2000; background: var(--primary-bg); transition: opacity 0.5s; opacity: 1; }
         .auth-container { width: 100%; max-width: 400px; text-align: center; }
-        .auth-logo { font-size: 3em; font-weight: 800; color: var(--accent-color); margin-bottom: 10px; }
+        .auth-logo { font-size: 3em; font-weight: 800; margin-bottom: 10px; color: var(--accent-color); }
         .auth-subtitle { color: var(--text-secondary); margin-bottom: 40px; }
         .auth-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 30px; }
         .auth-tab { flex: 1; padding: 15px; font-weight: 600; color: var(--text-secondary); cursor: pointer; position: relative; }
@@ -196,31 +189,101 @@
         .terms-agreement input { margin-left: 10px; }
         .terms-agreement label { font-size: 0.9em; color: var(--text-secondary); }
         .terms-agreement a { color: var(--accent-color); text-decoration: none; }
-        .btn-primary { width: 100%; background-color: var(--accent-color); border: none; border-radius: 12px; padding: 15px; color: #10141C; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: opacity 0.3s; }
-        .btn-primary:hover { opacity: 0.9; }
+        .btn-primary { width: 100%; background-color: var(--accent-color); border: none; border-radius: 12px; padding: 15px; color: white; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: background-color 0.3s; }
+        .btn-primary:hover { background-color: var(--accent-color-dark); }
         .auth-error { color: var(--danger-color); margin-top: -10px; margin-bottom: 15px; font-weight: 600; height: 20px; }
         #app-screen { display: none; }
-        body.app-visible { padding-top: 80px; padding-bottom: 100px; }
         
-        /* --- NEW: Card Animation --- */
-        @keyframes card-enter {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        body.app-visible { 
+            padding-top: 100px; 
+            padding-bottom: 100px; 
         }
-        .animated-card {
-            animation: card-enter 0.5s ease-out forwards;
+        
+        .referral-card { padding: 25px; text-align: center; }
+        .referral-card .icon { font-size: 3em; color: var(--gold-color); margin-bottom: 15px; }
+        .referral-card h3 { font-size: 1.5em; margin-bottom: 10px; }
+        .referral-card p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
+        .referral-code-wrapper { display: flex; border: 2px dashed var(--border-color); border-radius: 12px; padding: 5px; margin-bottom: 20px; }
+        #referral-code-display { flex-grow: 1; font-size: 1.5em; font-weight: 700; letter-spacing: 2px; padding: 10px; background: none; border: none; text-align: center; color: var(--text-primary); }
+        #copy-code-btn { background-color: var(--accent-color); color: white; border: none; border-radius: 8px; padding: 0 20px; cursor: pointer; font-size: 1em; font-weight: 600; transition: background-color .2s; }
+        #copy-code-btn:hover { background-color: var(--accent-color-dark); }
+        .referral-input-group { display: flex; gap: 10px; }
+        .referral-input-group input { flex-grow: 1; background-color: var(--primary-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; color: var(--text-primary); font-size: 1em; text-align: center; }
+        .referral-input-group button { background-color: var(--gold-color); border: none; border-radius: 12px; padding: 15px; color: #1E293B; font-size: 1.1em; font-weight: 700; cursor: pointer; }
+        #referral-message { height: 20px; margin-top: 15px; font-weight: 600; }
+        .referral-message.success { color: var(--success-color); }
+        .referral-message.error { color: var(--danger-color); }
+        #referral-counter-card { padding: 20px; text-align: center; }
+        #referral-counter-card .stat-number { font-size: 2.5em; font-weight: 800; color: var(--accent-color); }
+        #referral-counter-card .stat-label { font-size: 1em; color: var(--text-secondary); font-weight: 600; }
+        
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 3000; opacity: 0; transition: opacity 0.3s; }
+        .modal.show { opacity: 1; }
+        .modal-content { background-color: var(--card-bg); padding: 25px; border-radius: 16px; width: 90%; max-width: 400px; transform: scale(0.95); transition: transform 0.3s; }
+        .modal.show .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 1.5em; font-weight: 700; }
+        .close-btn { font-size: 1.8em; cursor: pointer; color: var(--text-secondary); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; }
+        .form-group input { width: 100%; background-color: var(--primary-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; color: var(--text-primary); font-size: 1em; }
+
+        #withdrawal-methods { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; 
         }
+        .method-card {
+            background-color: var(--primary-bg);
+            border-radius: 12px;
+            padding: 25px 15px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .method-card:hover { border-color: var(--accent-color); }
+        .method-card img {
+            width: 100px;  /* <-- تم تكبير حجم الشعار هنا */
+            height: 100px; /* <-- تم تكبير حجم الشعار هنا */
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        .method-card span { 
+            font-weight: 600; 
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        @keyframes card-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animated-card { animation: card-enter 0.5s ease-out forwards; opacity: 0; }
+
+        /* Styles for Withdrawal History */
+        #history-modal-content { max-height: 60vh; overflow-y: auto; padding: 0 10px; }
+        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .history-item:last-child { border-bottom: none; }
+        .history-details .amount { font-weight: 700; font-size: 1.1em; }
+        .history-details .method { font-size: 0.9em; color: var(--text-secondary); }
+        .history-status { padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85em; }
+        .history-status.pending { background-color: #f59e0b20; color: #F59E0B; }
+        .history-status.accepted { background-color: #16a34a20; color: #16A34A; }
+        .history-status.rejected { background-color: #e11d4820; color: #E11D48; }
+
+        /* Styles for Toast Notification */
+        .toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -150%); background-color: #334155; color: white; padding: 15px 25px; border-radius: 12px; z-index: 10000; transition: transform 0.5s ease; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .toast.show { transform: translate(-50%, 0); }
+        .toast.success { background-color: var(--success-color); }
+        .toast.error { background-color: var(--danger-color); }
 
     </style>
 </head>
 <body>
     <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div></div>
+    
+    <div id="toast-notification" class="toast"></div>
 
     <div id="auth-screen">
         <div class="auth-container">
@@ -256,40 +319,109 @@
         <main class="main-content">
             <div id="home" class="page"></div>
             <div id="results" class="page"></div>
+            <div id="referral" class="page">
+                <div class="styled-card animated-card" id="referral-counter-card">
+                    <div id="referral-count" class="stat-number">0 / 15</div>
+                    <div class="stat-label">دعوة صديق</div>
+                </div>
+                <div class="styled-card referral-card animated-card" style="animation-delay: 100ms">
+                    <div class="icon"><i class="fas fa-gift"></i></div>
+                    <h3>شارك واربح</h3>
+                    <p>شارك رمز الدعوة الخاص بك مع أصدقائك للفوز بجوائز قيمة.</p>
+                    <div class="referral-code-wrapper">
+                        <input id="referral-code-display" type="text" readonly>
+                        <button id="copy-code-btn">نسخ</button>
+                    </div>
+                </div>
+                <div class="styled-card referral-card animated-card" style="animation-delay: 200ms">
+                    <div class="icon"><i class="fas fa-hand-holding-dollar"></i></div>
+                    <h3>هل لديك رمز؟</h3>
+                    <p>أدخل رمز الدعوة الذي حصلت عليه من صديقك هنا.</p>
+                    <form id="referral-form">
+                        <div class="referral-input-group">
+                            <input id="referral-code-input" type="text" placeholder="أدخل الرمز هنا" required>
+                            <button type="submit">تأكيد</button>
+                        </div>
+                    </form>
+                    <div id="referral-message" class="referral-message"></div>
+                </div>
+            </div>
             <div id="notifications" class="page"></div>
             <div id="account" class="page">
-                <div class="account-profile-header">
+                <div class="account-profile-header animated-card">
                     <div class="avatar"><i class="fas fa-user-circle"></i></div>
                     <div id="profile-username" class="username">اسم المستخدم</div>
                     <div id="profile-email" class="email">user@example.com</div>
                 </div>
-                <h3 class="section-title">إحصائيات التطبيق</h3>
-                <div class="stats-container">
+                <h3 class="section-title animated-card" style="animation-delay: 100ms">إحصائيات التطبيق</h3>
+                <div class="stats-container animated-card" style="animation-delay: 200ms">
                     <div class="stat-item"><div id="stats-total" class="stat-number">0</div><div class="stat-label">إجمالي التوقعات</div></div>
                     <div class="stat-item"><div id="stats-successful" class="stat-number">0</div><div class="stat-label">التوقعات الناجحة</div></div>
                     <div class="stat-item"><div id="stats-accuracy" class="stat-number">0%</div><div class="stat-label">نسبة الدقة</div></div>
                 </div>
-                <h3 class="section-title">الإعدادات</h3>
-                <div class="styled-card">
-                    <div class="action-item"><i class="icon fas fa-palette"></i><span class="text">الوضع الداكن</span><div class="theme-switch-wrapper"><label class="theme-switch" for="theme-toggle"><input type="checkbox" id="theme-toggle" /><div class="slider"></div></label></div></div>
+
+                <h3 class="section-title animated-card" style="animation-delay: 300ms">الإعدادات</h3>
+                <div class="styled-card animated-card" style="animation-delay: 400ms">
+                    <div class="action-item" id="withdraw-btn"><i class="icon fas fa-money-bill-wave" style="color: var(--success-color);"></i><span class="text">السحب</span><i class="chevron fas fa-chevron-left"></i></div>
+                    <div class="action-item" id="withdrawal-history-btn" style="border-top: 1px solid var(--border-color);"><i class="icon fas fa-history" style="color: #6366F1;"></i><span class="text">سجل السحب</span><i class="chevron fas fa-chevron-left"></i></div>
+                    <div class="action-item" style="border-top: 1px solid var(--border-color);"><i class="icon fas fa-palette"></i><span class="text">الوضع الداكن</span><div class="theme-switch-wrapper"><label class="theme-switch" for="theme-toggle"><input type="checkbox" id="theme-toggle" /><div class="slider"></div></label></div></div>
                     <a href="#" class="action-item" style="border-top: 1px solid var(--border-color);"><i class="icon fas fa-edit"></i><span class="text">تعديل الملف الشخصي</span><i class="chevron fas fa-chevron-left"></i></a>
                 </div>
-                <div class="styled-card" style="margin-top: 25px;"><a href="#" id="logout-button" class="action-item logout-button"><i class="icon fas fa-sign-out-alt"></i><span class="text">تسجيل الخروج</span></a></div>
+                <div class="styled-card animated-card" style="animation-delay: 500ms; margin-top: 25px;"><a href="#" id="logout-button" class="action-item logout-button"><i class="icon fas fa-sign-out-alt"></i><span class="text">تسجيل الخروج</span></a></div>
             </div>
         </main>
 
         <nav class="bottom-nav">
              <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i><span>الرئيسية</span></div>
             <div class="nav-item" onclick="showPage('results', this)"><i class="fas fa-poll"></i><span>النتائج</span></div>
-            <div class="nav-item" onclick="showPage('notifications', this)"><i class="fas fa-bell"></i><span>الإشعارات</span></div>
+            <div class="nav-item" onclick="showPage('referral', this)"><i class="fas fa-gift"></i><span>الدعوة</span></div>
+            <div class="nav-item" onclick="showPage('notifications', this)"><i class="fas fa-bell"></i><span>الإشعارات</span><span class="notification-badge">0</span></div>
             <div class="nav-item" onclick="showPage('account', this)"><i class="fas fa-user"></i><span>حسابي</span></div>
         </nav>
+    </div>
+    
+    <!-- Modals -->
+    <div id="referral-welcome-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 class="modal-title">مهمة جديدة</h2><span class="close-btn">×</span></div>
+            <div style="text-align: center;">
+                <i class="fas fa-bullseye" style="font-size: 3em; color: var(--gold-color); margin-bottom: 15px;"></i>
+                <h3 style="font-size: 1.3em; margin-bottom: 10px;">اربح 1000 د.م قابلة للسحب</h3>
+                <p style="font-size: 1.1em; line-height: 1.6; color: var(--text-secondary);">فقط قم بدعوة <strong>15 صديقًا</strong> للانضمام باستخدام رمزك الخاص لإكمال المهمة.</p>
+            </div>
+        </div>
+    </div>
+    <div id="withdrawal-methods-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 class="modal-title">اختر طريقة السحب</h2><span class="close-btn">×</span></div>
+            <div id="withdrawal-methods"></div>
+        </div>
+    </div>
+    <div id="withdrawal-details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="withdrawal-details-title" class="modal-title">تفاصيل السحب</h2><span class="close-btn">×</span></div>
+            <form id="withdrawal-form">
+                <div id="withdrawal-fields"></div>
+                <div class="form-group">
+                    <label>المبلغ (د.م)</label>
+                    <input type="number" id="withdrawal-amount" required>
+                </div>
+                <button type="submit" class="btn-primary">تأكيد طلب السحب</button>
+            </form>
+        </div>
+    </div>
+    <div id="withdrawal-history-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 class="modal-title">سجل طلبات السحب</h2><span class="close-btn">×</span></div>
+            <div id="history-modal-content">
+                <!-- History items will be injected here -->
+            </div>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBxoNb9guwg4zUgNM4TAe6isL4atLKIpXo",
@@ -301,7 +433,6 @@
             appId: "1:1034670869173:web:26b43524f105de714a0cfc",
             measurementId: "G-64BDLLSCWH"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -312,6 +443,8 @@
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
         const logoutButton = document.getElementById('logout-button');
+        
+        let unreadNotificationsListener = null;
 
         auth.onAuthStateChanged(user => { user ? fetchUserDataAndEnterApp(user) : showAuthScreen(); });
 
@@ -319,18 +452,21 @@
             e.preventDefault();
             const name = document.getElementById('signup-name').value, email = document.getElementById('signup-email').value, password = document.getElementById('signup-password').value, errorEl = document.getElementById('signup-error');
             auth.createUserWithEmailAndPassword(email, password)
-                .then(cred => db.collection('users').doc(cred.user.uid).set({ name, email, balance: 0.00 }))
+                .then(cred => {
+                    const uid = cred.user.uid;
+                    const referralCode = uid.substring(0, 8).toUpperCase();
+                    const batch = db.batch();
+                    const userRef = db.collection('users').doc(uid);
+                    batch.set(userRef, { name, email, balance: 0.00, referralCode: referralCode, hasUsedReferral: false, referralCount: 0 });
+                    const referralRef = db.collection('referrals').doc(referralCode);
+                    batch.set(referralRef, { userId: uid });
+                    return batch.commit();
+                })
                 .catch(err => { errorEl.textContent = getAuthErrorMessage(err.code); });
         });
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value, password = document.getElementById('login-password').value, errorEl = document.getElementById('login-error');
-            errorEl.textContent = '';
-            auth.signInWithEmailAndPassword(email, password).catch(err => { errorEl.textContent = getAuthErrorMessage(err.code); });
-        });
-
-        logoutButton.addEventListener('click', (e) => { e.preventDefault(); auth.signOut(); });
+        loginForm.addEventListener('submit', (e) => { e.preventDefault(); const email = document.getElementById('login-email').value, password = document.getElementById('login-password').value, errorEl = document.getElementById('login-error'); errorEl.textContent = ''; auth.signInWithEmailAndPassword(email, password).catch(err => { errorEl.textContent = getAuthErrorMessage(err.code); }); });
+        logoutButton.addEventListener('click', (e) => { e.preventDefault(); if (unreadNotificationsListener) unreadNotificationsListener(); auth.signOut(); });
 
         function fetchUserDataAndEnterApp(user) {
             db.collection('users').doc(user.uid).onSnapshot((doc) => {
@@ -339,16 +475,29 @@
                     document.getElementById('user-balance').textContent = data.balance.toFixed(2);
                     document.getElementById('profile-username').textContent = data.name;
                     document.getElementById('profile-email').textContent = data.email;
+                    document.getElementById('referral-count').textContent = `${data.referralCount || 0} / 15`;
+                    
+                    listenForUnreadNotifications(data.lastNotificationCheck);
+
+                    if (data.referralCode) {
+                        document.getElementById('referral-code-display').value = data.referralCode;
+                    } else {
+                        const newCode = user.uid.substring(0, 8).toUpperCase();
+                        const userRef = db.collection('users').doc(user.uid);
+                        const referralRef = db.collection('referrals').doc(newCode);
+                        const batch = db.batch();
+                        batch.update(userRef, { referralCode: newCode, referralCount: 0 });
+                        batch.set(referralRef, { userId: user.uid });
+                        batch.commit().then(() => {
+                           document.getElementById('referral-code-display').value = newCode;
+                        });
+                    }
                 }
             });
             showAppScreen();
         }
 
-        function showAuthScreen() {
-            appScreen.style.display = 'none'; document.body.classList.remove('app-visible');
-            authScreen.style.display = 'flex'; authScreen.style.opacity = '1';
-        }
-
+        function showAuthScreen() { appScreen.style.display = 'none'; document.body.classList.remove('app-visible'); authScreen.style.display = 'flex'; authScreen.style.opacity = '1'; }
         function showAppScreen() {
             authScreen.style.opacity = '0';
             setTimeout(() => {
@@ -359,85 +508,183 @@
             }, 500);
         }
 
-        function showAuthForm(formId, tabEl) {
-            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-            document.getElementById(formId).classList.add('active');
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            tabEl.classList.add('active');
-            document.getElementById('login-error').textContent = '';
-            document.getElementById('signup-error').textContent = '';
-        }
+        function showAuthForm(formId, tabEl) { document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active')); document.getElementById(formId).classList.add('active'); document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active')); tabEl.classList.add('active'); document.getElementById('login-error').textContent = ''; document.getElementById('signup-error').textContent = ''; }
 
         function showPage(pageId, navEl) {
             loadingOverlay.style.display = 'flex';
             setTimeout(() => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById(pageId).classList.add('active');
-                if (navEl) {
-                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                    navEl.classList.add('active');
+                const newPage = document.getElementById(pageId);
+                if (newPage) newPage.classList.add('active');
+                if (navEl) { document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); navEl.classList.add('active'); }
+                if (pageId === 'referral') {
+                    let visitCount = parseInt(localStorage.getItem('referralVisitCount') || '0');
+                    visitCount++;
+                    if (visitCount % 3 === 1) { showModal('referral-welcome-modal'); }
+                    localStorage.setItem('referralVisitCount', visitCount);
+                }
+                if (pageId === 'notifications') {
+                    const user = auth.currentUser;
+                    if (user) {
+                        db.collection('users').doc(user.uid).update({
+                            lastNotificationCheck: firebase.firestore.FieldValue.serverTimestamp()
+                        }).catch(err => console.error("Failed to update lastNotificationCheck", err));
+                    }
                 }
                 loadingOverlay.style.display = 'none';
             }, 250);
         }
         
-        function updateMatchStates() {
-            const now = new Date();
-            document.querySelectorAll('.prediction-card').forEach(card => {
-                if (card.dataset.matchTime) {
-                    if (now >= new Date(card.dataset.matchTime)) card.classList.add('live'); 
-                    else card.classList.remove('live');
-                }
-            });
-        }
-        
-        function applyTheme(theme) {
-            document.body.classList.toggle('dark-theme', theme === 'dark');
-            localStorage.setItem('theme', theme);
-        }
+        function updateMatchStates() { const now = new Date(); document.querySelectorAll('.prediction-card').forEach(card => { if (card.dataset.matchTime) { if (now >= new Date(card.dataset.matchTime)) card.classList.add('live'); else card.classList.remove('live'); } }); }
+        function applyTheme(theme) { document.body.classList.toggle('dark-theme', theme === 'dark'); localStorage.setItem('theme', theme); }
 
         function initializeApp() {
             const themeToggle = document.getElementById('theme-toggle');
             themeToggle.addEventListener('change', () => applyTheme(themeToggle.checked ? 'dark' : 'light'));
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            applyTheme(savedTheme);
-            themeToggle.checked = savedTheme === 'dark';
-            // Set initial page without showing spinner
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('home').classList.add('active');
+            const savedTheme = localStorage.getItem('theme') || 'light'; applyTheme(savedTheme); themeToggle.checked = savedTheme === 'dark';
             
-            loadPredictions();
-            loadResults();
-            loadNotifications();
-            loadAppStatistics();
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('home').classList.add('active');
+            
+            loadPredictions(); 
+            loadResults(); 
+            loadNotifications(); 
+            loadAppStatistics(); 
+            setupReferralListeners(); 
+            setupWithdrawalListeners(); 
+            loadWithdrawalHistory();
+            
             setInterval(updateMatchStates, 60000);
         }
 
-        function loadAppStatistics() {
-            db.collection("predictions").where("status", "in", ["success", "failed"]).onSnapshot((snapshot) => {
-                let successful = 0;
-                snapshot.forEach(doc => { if (doc.data().status === 'success') successful++; });
-                const totalFinished = snapshot.size;
-                const accuracy = totalFinished > 0 ? Math.round((successful / totalFinished) * 100) : 0;
-                document.getElementById('stats-total').textContent = totalFinished;
-                document.getElementById('stats-successful').textContent = successful;
-                document.getElementById('stats-accuracy').textContent = `${accuracy}%`;
-            });
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.className = 'toast show';
+            toast.classList.add(type === 'error' ? 'error' : 'success');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function listenForUnreadNotifications(lastCheckTimestamp) {
+            if (unreadNotificationsListener) unreadNotificationsListener();
+            const user = auth.currentUser;
+            if (!user) return;
+            
+            const lastCheckDate = lastCheckTimestamp ? lastCheckTimestamp.toDate() : new Date(0);
+
+            unreadNotificationsListener = db.collection('notifications')
+                .where('createdAt', '>', lastCheckDate)
+                .onSnapshot(snapshot => {
+                    const count = snapshot.size;
+                    const badge = document.querySelector('.notification-badge');
+                    badge.textContent = count;
+                    if (count > 0) {
+                        badge.classList.add('show');
+                    } else {
+                        badge.classList.remove('show');
+                    }
+                });
         }
 
-        function timeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            let interval = seconds / 31536000;
-            if (interval > 1) return `منذ ${Math.floor(interval)} سنة`;
-            interval = seconds / 2592000;
-            if (interval > 1) return `منذ ${Math.floor(interval)} شهر`;
-            interval = seconds / 86400;
-            if (interval > 1) return `منذ ${Math.floor(interval)} يوم`;
-            interval = seconds / 3600;
-            if (interval > 1) return `منذ ${Math.floor(interval)} ساعة`;
-            interval = seconds / 60;
-            if (interval > 1) return `منذ ${Math.floor(interval)} دقيقة`;
-            return 'الآن';
+        function setupReferralListeners() {
+            const copyBtn = document.getElementById('copy-code-btn'), codeDisplay = document.getElementById('referral-code-display');
+            const referralForm = document.getElementById('referral-form'), referralInput = document.getElementById('referral-code-input'), referralMessage = document.getElementById('referral-message');
+            copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(codeDisplay.value).then(() => { copyBtn.textContent = 'تم النسخ!'; setTimeout(() => { copyBtn.textContent = 'نسخ'; }, 2000); }); });
+            referralForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const enteredCode = referralInput.value.toUpperCase().trim(), currentUser = auth.currentUser;
+                referralMessage.textContent = ''; referralMessage.className = 'referral-message';
+                if (!enteredCode) { referralMessage.textContent = 'الرجاء إدخال رمز.'; referralMessage.classList.add('error'); return; }
+                if (enteredCode === codeDisplay.value) { referralMessage.textContent = 'لا يمكنك استخدام الرمز الخاص بك.'; referralMessage.classList.add('error'); return; }
+                const refereeRef = db.collection('users').doc(currentUser.uid);
+                const refereeDoc = await refereeRef.get();
+                if (refereeDoc.data().hasUsedReferral) { referralMessage.textContent = 'لقد استخدمت رمز دعوة بالفعل.'; referralMessage.classList.add('error'); return; }
+                const referralRef = db.collection('referrals').doc(enteredCode);
+                const referralDoc = await referralRef.get();
+                if (!referralDoc.exists) { referralMessage.textContent = 'رمز الدعوة غير صالح.'; referralMessage.classList.add('error'); return; }
+                const referrerId = referralDoc.data().userId, referrerRef = db.collection('users').doc(referrerId);
+                try {
+                    await db.runTransaction(async (t) => {
+                        const referrerDoc = await t.get(referrerRef);
+                        if (!referrerDoc.exists) { throw "Referrer not found."; }
+                        t.update(referrerRef, { balance: firebase.firestore.FieldValue.increment(400), referralCount: firebase.firestore.FieldValue.increment(1) });
+                        t.update(refereeRef, { balance: firebase.firestore.FieldValue.increment(100), hasUsedReferral: true });
+                    });
+                    referralMessage.textContent = 'تمت إضافة 100 د.م إلى رصيدك!'; referralMessage.classList.add('success');
+                    referralInput.disabled = true; referralForm.querySelector('button').disabled = true;
+                } catch (error) { console.error("Transaction failed: ", error); referralMessage.textContent = 'حدث خطأ. حاول مرة أخرى.'; referralMessage.classList.add('error'); }
+            });
+        }
+        function setupWithdrawalListeners() {
+            document.getElementById('withdraw-btn').addEventListener('click', () => { loadWithdrawalMethods(); showModal('withdrawal-methods-modal'); });
+            document.getElementById('withdrawal-history-btn').addEventListener('click', () => showModal('withdrawal-history-modal'));
+            
+            document.addEventListener('click', e => {
+                const methodCard = e.target.closest('.method-card');
+                if (methodCard) {
+                    const methodName = methodCard.dataset.name, fields = methodCard.dataset.fields.split(',');
+                    setupWithdrawalDetailsForm(methodName, fields); closeModal('withdrawal-methods-modal'); showModal('withdrawal-details-modal');
+                }
+            });
+            document.getElementById('withdrawal-form').addEventListener('submit', async e => {
+                e.preventDefault();
+                const amount = parseFloat(document.getElementById('withdrawal-amount').value), userBalance = parseFloat(document.getElementById('user-balance').textContent);
+                if (amount > userBalance) { showToast("رصيدك غير كافٍ.", "error"); return; } 
+                if (amount <= 0) { showToast("الرجاء إدخال مبلغ صحيح.", "error"); return; }
+                const formData = new FormData(e.target); const details = {};
+                for (let [key, value] of formData.entries()) { details[key] = value; }
+                try {
+                    await db.collection('withdrawalRequests').add({ userId: auth.currentUser.uid, username: document.getElementById('profile-username').textContent, amount, method: document.getElementById('withdrawal-details-title').textContent.replace('تفاصيل ', ''), details, status: 'pending', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                    await db.collection('users').doc(auth.currentUser.uid).update({ balance: firebase.firestore.FieldValue.increment(-amount) });
+                    showToast('تم إرسال طلب السحب بنجاح.');
+                    closeModal('withdrawal-details-modal');
+                } catch (error) { 
+                    showToast('حدث خطأ. حاول مرة أخرى.', 'error');
+                    console.error(error); 
+                }
+            });
+        }
+        function loadWithdrawalMethods() {
+            const container = document.getElementById('withdrawal-methods');
+            db.collection('withdrawalMethods').orderBy('name').onSnapshot(snapshot => {
+                let html = '';
+                snapshot.forEach(doc => { const method = doc.data(); html += `<div class="method-card" data-name="${method.name}" data-fields="${method.fields.join(',')}"><img src="${method.logo}" alt="${method.name}"><span>${method.name}</span></div>`; });
+                container.innerHTML = html || "<p>لا توجد طرق سحب متاحة حاليًا.</p>";
+            });
+        }
+        function setupWithdrawalDetailsForm(methodName, fields) {
+            document.getElementById('withdrawal-details-title').textContent = `تفاصيل ${methodName}`;
+            const container = document.getElementById('withdrawal-fields'); let html = '';
+            fields.forEach(field => { html += `<div class="form-group"><label>${field}</label><input type="text" name="${field.replace(/\s+/g, '_')}" required></div>`; });
+            container.innerHTML = html; document.getElementById('withdrawal-form').reset();
+        }
+        function showModal(modalId) { const modal = document.getElementById(modalId); modal.style.display = 'flex'; setTimeout(() => modal.classList.add('show'), 10); }
+        function closeModal(modalId) { const modal = document.getElementById(modalId); modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 300); }
+        document.querySelectorAll('.close-btn').forEach(btn => btn.onclick = () => { const modal = btn.closest('.modal'); closeModal(modal.id); });
+        
+        function loadAppStatistics() { db.collection("predictions").where("status", "in", ["success", "failed"]).onSnapshot((snapshot) => { let successful = 0; snapshot.forEach(doc => { if (doc.data().status === 'success') successful++; }); const totalFinished = snapshot.size; const accuracy = totalFinished > 0 ? Math.round((successful / totalFinished) * 100) : 0; document.getElementById('stats-total').textContent = totalFinished; document.getElementById('stats-successful').textContent = successful; document.getElementById('stats-accuracy').textContent = `${accuracy}%`; }); }
+        function timeAgo(date) { if(!date) return ''; const seconds = Math.floor((new Date() - date) / 1000); let interval = seconds / 31536000; if (interval > 1) return `منذ ${Math.floor(interval)} سنة`; interval = seconds / 2592000; if (interval > 1) return `منذ ${Math.floor(interval)} شهر`; interval = seconds / 86400; if (interval > 1) return `منذ ${Math.floor(interval)} يوم`; interval = seconds / 3600; if (interval > 1) return `منذ ${Math.floor(interval)} ساعة`; interval = seconds / 60; if (interval > 1) return `منذ ${Math.floor(interval)} دقيقة`; return 'الآن'; }
+
+        function loadWithdrawalHistory() {
+            const container = document.getElementById('history-modal-content');
+            if (!auth.currentUser) return;
+            db.collection("withdrawalRequests").where("userId", "==", auth.currentUser.uid).orderBy("createdAt", "desc").limit(20)
+              .onSnapshot((querySnapshot) => {
+                if (querySnapshot.empty) { container.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--text-secondary);">لا توجد طلبات سحب سابقة.</p>'; return; }
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const request = doc.data();
+                    let statusText = 'قيد الانتظار';
+                    if (request.status === 'accepted') statusText = 'مقبول';
+                    if (request.status === 'rejected') statusText = 'مرفوض';
+                    html += `<div class="history-item"><div class="history-details"><div class="amount">${request.amount.toFixed(2)} د.م</div><div class="method">${request.method} - ${timeAgo(request.createdAt ? request.createdAt.toDate() : null)}</div></div><div class="history-status ${request.status}">${statusText}</div></div>`;
+                });
+                container.innerHTML = html;
+            }, (error) => {
+                console.error("Error loading withdrawal history: ", error);
+                container.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--danger-color); font-weight: bold;">حدث خطأ في جلب السجل. قد تحتاج لإنشاء فهرس في قاعدة البيانات. انظر للكونسول لمزيد من التفاصيل.</p>';
+            });
         }
 
         function loadPredictions() {
@@ -445,13 +692,12 @@
             db.collection("predictions").where("status", "==", "pending").orderBy("matchTime", "asc").onSnapshot((querySnapshot) => {
                 let html = '';
                 querySnapshot.forEach((doc, index) => {
-                    const p = doc.data();
-                    const matchDate = p.matchTime.toDate();
+                    const p = doc.data(); const matchDate = p.matchTime.toDate();
                     const timeString = matchDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-                    html += `<div class="prediction-card styled-card animated-card" style="animation-delay: ${index * 100}ms" data-match-time="${matchDate.toISOString()}"><div class="match-banner"><div class="team-side team-a"><img src="${p.team1Logo}" alt="${p.team1Name}"><span class="team-name">${p.team1Name}</span></div><div class="match-scoreboard"><div class="match-time">${timeString}</div><div class="match-score">${p.score.team1}-${p.score.team2}</div></div><div class="team-side team-b"><img src="${p.team2Logo}" alt="${p.team2Name}"><span class="team-name">${p.team2Name}</span></div></div><div class="prediction-footer"><div class="prediction-label"><i class="fas fa-trophy"></i><span>التوقع</span></div><div class="prediction-value"><span>${p.predictionText}</span></div></div></div>`;
+                    const scoreDisplay = `${p.score.team1}-${p.score.team2}`;
+                    html += `<div class="prediction-card styled-card animated-card" style="animation-delay: ${index * 100}ms" data-match-time="${matchDate.toISOString()}"><div class="match-banner"><div class="team-side team-a"><img src="${p.team1Logo}" alt="${p.team1Name}"><span class="team-name">${p.team1Name}</span></div><div class="match-scoreboard"><div class="match-time">${timeString}</div><div class="match-score">${scoreDisplay}</div></div><div class="team-side team-b"><img src="${p.team2Logo}" alt="${p.team2Name}"><span class="team-name">${p.team2Name}</span></div></div><div class="prediction-footer"><div class="prediction-label"><i class="fas fa-trophy"></i><span>التوقع</span></div><div class="prediction-value"><span>${p.predictionText}</span></div></div></div>`;
                 });
-                container.innerHTML = html;
-                updateMatchStates();
+                container.innerHTML = html; updateMatchStates();
             });
         }
         
@@ -460,10 +706,8 @@
             db.collection("predictions").where("status", "in", ["success", "failed"]).orderBy("matchTime", "desc").onSnapshot((querySnapshot) => {
                 let html = '<h2 class="page-title">النتائج</h2>';
                 querySnapshot.forEach((doc, index) => {
-                    const p = doc.data();
-                    const statusClass = p.status === 'success' ? 'success' : 'failed';
-                    const statusText = p.status === 'success' ? 'نجح' : 'خسر';
-                    html += `<div class="styled-card result-card animated-card" style="animation-delay: ${index * 100}ms"><div class="result-details"><div class="result-teams"><img src="${p.team1Logo}"><span>${p.team1Name} ${p.score.team1} - ${p.score.team2} ${p.team2Name}</span><img src="${p.team2Logo}"></div><div class="result-prediction">التوقع: ${p.predictionText} - <span class="status ${statusClass}">${statusText}</span></div></div></div>`;
+                    const p = doc.data(); const statusClass = p.status === 'success' ? 'success' : 'failed'; const statusText = p.status === 'success' ? 'نجح' : 'خسر';
+                    html += `<div class="styled-card result-card animated-card" style="animation-delay: ${index * 100}ms"><div class="result-details"><div class="result-teams"><img src="${p.team1Logo}"><span>${p.team1Name} <span dir="ltr">${p.score.team1} - ${p.score.team2}</span> ${p.team2Name}</span><img src="${p.team2Logo}"></div><div class="result-prediction">التوقع: ${p.predictionText} - <span class="status ${statusClass}">${statusText}</span></div></div></div>`;
                 });
                 container.innerHTML = html;
             });
@@ -474,11 +718,8 @@
             db.collection("notifications").orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
                 let html = '<h2 class="page-title">الإشعارات</h2>';
                 querySnapshot.forEach((doc, index) => {
-                    const n = doc.data();
-                    const notificationDate = n.createdAt ? n.createdAt.toDate() : new Date();
-                    let iconHtml = n.icon && (n.icon.startsWith('http') || n.icon.startsWith('https'))
-                        ? `<img src="${n.icon}" alt="Notification Icon">`
-                        : `<i class="${n.icon || 'fas fa-bell'}"></i>`;
+                    const n = doc.data(); const notificationDate = n.createdAt ? n.createdAt.toDate() : null;
+                    let iconHtml = n.icon && (n.icon.startsWith('http')) ? `<img src="${n.icon}" alt="Icon">` : `<i class="${n.icon || 'fas fa-bell'}"></i>`;
                     html += `<div class="styled-card notification-item animated-card" style="animation-delay: ${index * 100}ms"><div class="icon">${iconHtml}</div><div class="content"><div class="title">${n.title}</div><div class="subtitle">${n.subtitle}</div></div><div class="time">${timeAgo(notificationDate)}</div></div>`;
                 });
                 container.innerHTML = html;
@@ -496,4 +737,4 @@
         }
     </script>
 </body>
-</html>```
+</html>
